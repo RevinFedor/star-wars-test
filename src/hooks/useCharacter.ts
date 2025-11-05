@@ -5,6 +5,7 @@ import type { Character } from '@/api/types';
 
 interface UseCharacterReturn {
   character: Character | null;
+  originalCharacter: Character | null;
   isLoading: boolean;
   error: Error | null;
   hasLocalEdits: boolean;
@@ -18,6 +19,7 @@ interface UseCharacterReturn {
  */
 export const useCharacter = (characterId: string): UseCharacterReturn => {
   const [character, setCharacter] = useState<Character | null>(null);
+  const [originalCharacter, setOriginalCharacter] = useState<Character | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [hasLocalEdits, setHasLocalEdits] = useState(false);
@@ -29,6 +31,7 @@ export const useCharacter = (characterId: string): UseCharacterReturn => {
 
       // Загружаем данные из API
       const apiData = await fetchCharacter(characterId);
+      setOriginalCharacter(apiData);
 
       // Получаем локальные изменения
       const localEdits = getCharacterEdits(characterId);
@@ -55,11 +58,11 @@ export const useCharacter = (characterId: string): UseCharacterReturn => {
     if (characterId) {
       loadCharacter();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [characterId]);
 
   return {
     character,
+    originalCharacter,
     isLoading,
     error,
     hasLocalEdits,

@@ -24,7 +24,6 @@ export interface ApiResponse<T> {
   results: T[];
 }
 
-// Локальное редактирование (для 2й страницы)
 export interface LocalCharacterEdits {
   name?: string;
   height?: string;

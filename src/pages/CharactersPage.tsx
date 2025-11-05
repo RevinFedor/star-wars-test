@@ -67,8 +67,37 @@ export const CharactersPage = () => {
         </Alert>
       )}
 
+      {/* Pagination TOP - показываем всегда, если есть данные */}
+      {data && data.results.length > 0 && (
+        <div className="mb-6">
+          <Pagination
+            currentPage={pageFromUrl}
+            totalCount={data.count}
+            pageSize={10}
+            onPageChange={handlePageChange}
+            hasNext={!!data.next}
+            hasPrevious={!!data.previous}
+          />
+        </div>
+      )}
+
+      {/* Skeleton для пагинации на первой загрузке */}
+      {isLoading && !data && (
+        <div className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Skeleton className="h-5 w-64" />
+          <div className="flex gap-2">
+            <Skeleton className="h-9 w-20" />
+            <Skeleton className="h-9 w-9" />
+            <Skeleton className="h-9 w-9" />
+            <Skeleton className="h-9 w-9" />
+            <Skeleton className="h-9 w-20" />
+            <Skeleton className="h-9 w-24" />
+          </div>
+        </div>
+      )}
+
       {/* Grid с карточками или скелетонами */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-6">
         {isLoading ? (
           // Показываем скелетоны во время загрузки
           [...Array(9)].map((_, i) => <CharacterCardSkeleton key={i} />)
@@ -89,7 +118,7 @@ export const CharactersPage = () => {
         </div>
       )}
 
-      {/* Pagination - показываем всегда, если есть данные */}
+      {/* Pagination BOTTOM - показываем всегда, если есть данные */}
       {data && data.results.length > 0 && (
         <Pagination
           currentPage={pageFromUrl}
@@ -99,17 +128,6 @@ export const CharactersPage = () => {
           hasNext={!!data.next}
           hasPrevious={!!data.previous}
         />
-      )}
-
-      {/* Skeleton для пагинации на первой загрузке */}
-      {isLoading && !data && (
-        <div className="flex items-center justify-between">
-          <Skeleton className="h-5 w-64" />
-          <div className="flex gap-2">
-            <Skeleton className="h-9 w-24" />
-            <Skeleton className="h-9 w-20" />
-          </div>
-        </div>
       )}
     </div>
   );

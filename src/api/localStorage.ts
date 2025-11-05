@@ -46,7 +46,7 @@ export const getCharacterEdits = (characterId: string): LocalCharacterEdits | nu
 };
 
 /**
- * Сохранить изменения для конкретного персонажа
+ * Сохранить изменения для конкретного персонажа (мержит с существующими)
  */
 export const saveCharacterEdits = (
   characterId: string,
@@ -54,11 +54,18 @@ export const saveCharacterEdits = (
 ): void => {
   const allEdits = getAllEditsFromStorage();
 
+  // Мержим новые изменения с существующими
+  const existingEdits = allEdits[characterId] || {};
+  const mergedEdits = {
+    ...existingEdits,
+    ...edits,
+  };
+
   // Если все поля пустые, удаляем запись вместо сохранения
-  const hasAnyEdits = Object.values(edits).some(value => value !== undefined && value !== '');
+  const hasAnyEdits = Object.values(mergedEdits).some(value => value !== undefined && value !== '');
 
   if (hasAnyEdits) {
-    allEdits[characterId] = edits;
+    allEdits[characterId] = mergedEdits;
   } else {
     delete allEdits[characterId];
   }
