@@ -4,7 +4,6 @@ import { useCharacter } from '@/hooks/useCharacter';
 import { useCharacterEdit } from '@/hooks/useCharacterEdit';
 import { useCharacterImage } from '@/hooks/useCharacterImage';
 import { useResourceName, useResourceNames } from '@/hooks/useResourceName';
-import { getCharacterEdits } from '@/api/localStorage';
 import { formatField, formatDate } from '@/lib/formatters';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -53,7 +52,7 @@ interface EditableFieldProps {
 const EditableFieldDisplay = ({
   label,
   value,
-  field,
+  field: _field,
   isEdited,
   originalValue,
   onReset,
@@ -260,9 +259,6 @@ export const CharacterDetailPage = () => {
       </div>
     );
   }
-
-  // Данные для отображения (либо из editedData в режиме редактирования, либо из character)
-  const displayData = isEditing ? editedData : character;
 
   return (
     <div className="container mx-auto px-4 py-8">
